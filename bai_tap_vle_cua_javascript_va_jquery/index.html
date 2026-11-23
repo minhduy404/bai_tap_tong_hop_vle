@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIR - Trung tâm quản lý</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --nen:#0b0d12;
+    --nen-phu:#11151d;
+    --the:#171d27;
+    --the-phu:#1d2632;
+    --chu:#f4f1e9;
+    --chu-phu:#929cab;
+    --vien:rgba(255,255,255,.09);
+    --diem:#d6b477;
+    --diem-phu:#f1d9a5;
+    --bong:rgba(214,180,119,.16);
+}
+*{box-sizing:border-box}
+body{
+    margin:0;background:var(--nen);color:var(--chu);
+    font-family:'DM Sans',sans-serif;transition:.35s;
+}
+a{text-decoration:none;color:inherit}
+.sidebar{
+    width:250px;position:fixed;top:0;bottom:0;left:0;
+    background:var(--nen-phu);border-right:1px solid var(--vien);
+    padding:28px 18px;z-index:100;display:flex;flex-direction:column;
+}
+.logo{
+    font-family:'Playfair Display';font-size:29px;letter-spacing:5px;
+    color:var(--diem);padding:0 12px 30px;
+}
+.logo small{display:block;font:10px 'DM Sans';letter-spacing:3px;color:var(--chu-phu);margin-top:5px}
+.nhom-menu{font-size:10px;color:var(--chu-phu);letter-spacing:2px;padding:15px 12px 9px}
+.menu a{
+    display:flex;align-items:center;gap:13px;padding:12px 14px;
+    color:var(--chu-phu);border-radius:12px;margin:4px 0;transition:.25s;
+}
+.menu a:hover,.menu a.active{
+    color:var(--diem);background:var(--bong);transform:translateX(4px);
+}
+.menu i{font-size:18px;width:22px}
+.sidebar-bottom{margin-top:auto;padding:14px;border:1px solid var(--vien);border-radius:15px;background:var(--the)}
+.sidebar-bottom small{color:var(--chu-phu)}
+.main{margin-left:250px;padding:28px 34px 60px;max-width:1700px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;gap:15px}
+.breadcrumb{color:var(--chu-phu);font-size:13px}
+.top-actions{display:flex;align-items:center;gap:12px}
+.icon-btn{
+    width:42px;height:42px;border:1px solid var(--vien);border-radius:12px;
+    display:grid;place-items:center;background:var(--the);color:var(--chu);
+    cursor:pointer;transition:.25s;
+}
+.icon-btn:hover{color:var(--diem);border-color:var(--diem);transform:translateY(-3px)}
+.avatar{
+    width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+    background:var(--diem);color:#171717;font-weight:800;
+}
+.hero{
+    min-height:280px;border:1px solid var(--vien);border-radius:24px;
+    padding:38px;position:relative;overflow:hidden;
+    background:linear-gradient(110deg,var(--the),var(--nen-phu));
+    display:flex;align-items:center;margin-bottom:25px;
+}
+.hero:after{
+    content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+    background:var(--bong);filter:blur(45px);right:5%;top:-100px;
+}
+.hero-content{position:relative;z-index:2;max-width:620px}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--diem);font-weight:700}
+.hero h1{font:700 clamp(30px,4vw,48px) 'Playfair Display';margin:14px 0}
+.hero p{color:var(--chu-phu);line-height:1.8;max-width:540px}
+.btn-gold{
+    background:var(--diem);color:#171717;border:0;border-radius:10px;
+    padding:12px 19px;font-weight:800;transition:.25s;
+}
+.btn-gold:hover{background:var(--diem-phu);color:#171717;transform:translateY(-3px);box-shadow:0 8px 25px var(--bong)}
+.btn-outline{
+    border:1px solid var(--vien);color:var(--chu);border-radius:10px;
+    padding:11px 18px;background:transparent;display:inline-block;
+}
+.btn-outline:hover{border-color:var(--diem);color:var(--diem)}
+.section-title{
+    display:flex;justify-content:space-between;align-items:center;
+    margin:34px 0 17px;gap:12px;
+}
+.section-title h2{font:700 23px 'Playfair Display';margin:0}
+.section-title p{font-size:12px;color:var(--chu-phu);margin:5px 0 0}
+.stat-card{
+    background:var(--the);border:1px solid var(--vien);border-radius:18px;
+    padding:20px;height:100%;transition:.3s;position:relative;overflow:hidden;
+}
+.stat-card:hover{transform:translateY(-6px);border-color:var(--diem);box-shadow:0 15px 35px var(--bong)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-icon{
+    width:43px;height:43px;border-radius:13px;display:grid;place-items:center;
+    background:var(--bong);color:var(--diem);font-size:20px;
+}
+.stat-label{color:var(--chu-phu);font-size:12px;margin-top:17px}
+.stat-number{font-size:27px;font-weight:800;margin-top:5px}
+.stat-note{font-size:11px;color:#53c99a;margin-top:7px}
+.product-card{
+    background:var(--the);border:1px solid var(--vien);border-radius:18px;
+    overflow:hidden;height:100%;transition:.3s;
+}
+.product-card:hover{transform:translateY(-7px);border-color:var(--diem);box-shadow:0 18px 40px var(--bong)}
+.product-image{height:190px;background:var(--the-phu);position:relative;overflow:hidden}
+.product-image img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.product-card:hover .product-image img{transform:scale(1.08)}
+.product-badge{
+    position:absolute;top:12px;left:12px;background:var(--diem);
+    color:#171717;padding:6px 10px;border-radius:7px;font-size:10px;font-weight:800;
+}
+.product-info{padding:17px}
+.product-info h3{font-size:15px;font-weight:700}
+.product-info p{font-size:11px;color:var(--chu-phu)}
+.product-price{font-size:18px;color:var(--diem);font-weight:800}
+.stock{font-size:11px;color:var(--chu-phu)}
+.panel{
+    background:var(--the);border:1px solid var(--vien);border-radius:18px;padding:22px;height:100%;
+}
+.panel h3{font:700 18px 'Playfair Display';margin-bottom:20px}
+.activity{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--vien)}
+.activity:last-child{border:0}
+.activity-icon{width:36px;height:36px;border-radius:10px;background:var(--bong);color:var(--diem);display:grid;place-items:center;flex-shrink:0}
+.activity small{color:var(--chu-phu)}
+.progress{height:7px;background:var(--the-phu)}
+.progress-bar{background:var(--diem)}
+.category-row{display:flex;justify-content:space-between;margin:16px 0;font-size:12px}
+.category-row span:last-child{color:var(--diem);font-weight:700}
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.theme-option{
+    height:42px;border:2px solid transparent;border-radius:10px;cursor:pointer;
+    transition:.2s;position:relative;
+}
+.theme-option:hover{transform:scale(1.06)}
+.theme-option.selected{border-color:var(--diem);outline:2px solid var(--diem)}
+.theme-option span{position:absolute;inset:0;display:grid;place-items:center;font-size:10px;color:white;text-shadow:0 1px 4px #000}
+.footer{border-top:1px solid var(--vien);margin-top:45px;padding-top:22px;color:var(--chu-phu);font-size:11px}
+@media(max-width:1000px){.sidebar{width:75px;padding:20px 10px}.logo{font-size:18px;padding:0 8px 25px}.logo small,.menu span,.nhom-menu,.sidebar-bottom{display:none}.menu a{justify-content:center}.main{margin-left:75px;padding:22px}}
+@media(max-width:600px){.main{padding:15px;margin-left:0;padding-top:75px}.sidebar{height:62px;width:100%;bottom:auto;right:0;display:block;padding:9px 12px}.logo{display:none}.menu{display:flex;justify-content:space-around}.menu a{padding:9px;margin:0}.menu a span{display:none}.topbar{margin-bottom:20px}.hero{padding:24px}.product-image{height:150px}}
+</style>
+</head>
+
+<body>
+<aside class="sidebar">
+    <div class="logo">NOIR<small>HỆ THỐNG QUẢN LÝ</small></div>
+    <div class="nhom-menu">TỔNG QUAN</div>
+    <nav class="menu">
+        <a class="active" href="index.html"><i class="bi bi-grid-1x2-fill"></i><span>Tổng quan</span></a>
+        <a href="sanpham.html"><i class="bi bi-box-seam"></i><span>Sản phẩm</span></a>
+        <a href="baocao.html"><i class="bi bi-bar-chart-line"></i><span>Báo cáo</span></a>
+    </nav>
+    <div class="nhom-menu">HỆ THỐNG</div>
+    <nav class="menu">
+        <a href="#chude"><i class="bi bi-palette"></i><span>Giao diện</span></a>
+        <a href="#hoatdong"><i class="bi bi-clock-history"></i><span>Hoạt động</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+        <i class="bi bi-shield-check" style="color:var(--diem);font-size:22px"></i>
+        <div class="fw-bold mt-2">Không gian quản lý</div>
+        <small>Theo dõi hoạt động kinh doanh</small>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div>
+            <div class="breadcrumb">Không gian làm việc / Tổng quan</div>
+            <div class="fw-bold mt-1">Trung tâm điều hành</div>
+        </div>
+        <div class="top-actions">
+            <button class="icon-btn" onclick="window.location.href='baocao.html'" title="Xem báo cáo"><i class="bi bi-graph-up"></i></button>
+            <button class="icon-btn" onclick="document.getElementById('chude').scrollIntoView({behavior:'smooth'})" title="Đổi giao diện"><i class="bi bi-palette"></i></button>
+            <div class="avatar">N</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">KHÔNG GIAN QUẢN TRỊ • 2026</div>
+            <h1>Quản lý tinh gọn.<br>Vận hành hiệu quả.</h1>
+            <p>Theo dõi sản phẩm, kiểm soát hàng tồn và nắm bắt tình hình kinh doanh trong một không gian quản lý thống nhất.</p>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn-gold" href="sanpham.html"><i class="bi bi-box-seam me-2"></i>Quản lý sản phẩm</a>
+                <a class="btn-outline" href="baocao.html">Xem báo cáo <i class="bi bi-arrow-up-right ms-1"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-title">
+        <div><h2>Bức tranh tổng thể</h2><p>Các chỉ số quan trọng trong hệ thống</p></div>
+        <span class="badge rounded-pill text-bg-secondary">Dữ liệu minh họa</span>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-6 col-xl-3"><div class="stat-card">
+            <div class="stat-top"><i class="bi bi-box-seam stat-icon"></i><i class="bi bi-three-dots"></i></div>
+            <div class="stat-label">Tổng sản phẩm</div><div class="stat-number" id="totalProducts">128</div>
+            <div class="stat-note"><i class="bi bi-arrow-up-right"></i> Danh mục đang quản lý</div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="stat-card">
+            <div class="stat-top"><i class="bi bi-stack stat-icon"></i><i class="bi bi-three-dots"></i></div>
+            <div class="stat-label">Tổng hàng tồn</div><div class="stat-number">2.486</div>
+            <div class="stat-note">Đơn vị sản phẩm</div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="stat-card">
+            <div class="stat-top"><i class="bi bi-wallet2 stat-icon"></i><i class="bi bi-three-dots"></i></div>
+            <div class="stat-label">Giá trị hàng tồn</div><div class="stat-number">8,45 tỷ</div>
+            <div class="stat-note">Theo giá trị nhập hàng</div>
+        </div></div>
+        <div class="col-6 col-xl-3"><div class="stat-card">
+            <div class="stat-top"><i class="bi bi-exclamation-triangle stat-icon"></i><i class="bi bi-three-dots"></i></div>
+            <div class="stat-label">Sản phẩm sắp hết</div><div class="stat-number" style="color:#e9a16d">07</div>
+            <div class="stat-note" style="color:#e9a16d">Cần kiểm tra tồn kho</div>
+        </div></div>
+    </div>
+
+    <div class="section-title">
+        <div><h2>Sản phẩm nổi bật</h2><p>Một số sản phẩm được quan tâm trong cửa hàng</p></div>
+        <a href="sanpham.html" style="color:var(--diem);font-size:12px">Xem toàn bộ <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-6 col-lg-3"><div class="product-card">
+            <div class="product-image"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=700" alt="Máy tính xách tay"><span class="product-badge">BÁN CHẠY</span></div>
+            <div class="product-info"><h3>MacBook Pro M3</h3><p>Máy tính xách tay cao cấp</p><div class="d-flex justify-content-between align-items-center"><span class="product-price">42.990.000đ</span><span class="stock">Còn 18</span></div></div>
+        </div></div>
+        <div class="col-6 col-lg-3"><div class="product-card">
+            <div class="product-image"><img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700" alt="Điện thoại"><span class="product-badge">NỔI BẬT</span></div>
+            <div class="product-info"><h3>Điện thoại cao cấp</h3><p>Thiết kế hiện đại</p><div class="d-flex justify-content-between align-items-center"><span class="product-price">28.490.000đ</span><span class="stock">Còn 24</span></div></div>
+        </div></div>
+        <div class="col-6 col-lg-3"><div class="product-card">
+            <div class="product-image"><img src="https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=700" alt="Tai nghe"><span class="product-badge">MỚI</span></div>
+            <div class="product-info"><h3>Tai nghe không dây</h3><p>Âm thanh chất lượng cao</p><div class="d-flex justify-content-between align-items-center"><span class="product-price">5.990.000đ</span><span class="stock">Còn 32</span></div></div>
+        </div></div>
+        <div class="col-6 col-lg-3"><div class="product-card">
+            <div class="product-image"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700" alt="Đồng hồ"><span class="product-badge">CAO CẤP</span></div>
+            <div class="product-info"><h3>Đồng hồ thời trang</h3><p>Phong cách thanh lịch</p><div class="d-flex justify-content-between align-items-center"><span class="product-price">8.490.000đ</span><span class="stock">Còn 12</span></div></div>
+        </div></div>
+    </div>
+
+    <div class="row g-3 mt-2">
+        <div class="col-lg-7">
+            <div class="panel">
+                <h3>Hoạt động kinh doanh</h3>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div><div class="stat-label">Doanh thu mô phỏng trong tháng</div><div class="stat-number">486.500.000đ</div></div>
+                    <span class="badge rounded-pill" style="background:var(--bong);color:var(--diem)">+12,8%</span>
+                </div>
+                <div class="d-flex align-items-end gap-2" style="height:180px">
+                    <div class="flex-fill text-center"><div class="progress" style="height:95px"><div class="progress-bar w-100" style="height:45%"></div></div><small>Tuần 1</small></div>
+                    <div class="flex-fill text-center"><div class="progress" style="height:95px"><div class="progress-bar w-100" style="height:70%"></div></div><small>Tuần 2</small></div>
+                    <div class="flex-fill text-center"><div class="progress" style="height:95px"><div class="progress-bar w-100" style="height:58%"></div></div><small>Tuần 3</small></div>
+                    <div class="flex-fill text-center"><div class="progress" style="height:95px"><div class="progress-bar w-100" style="height:90%"></div></div><small>Tuần 4</small></div>
+                </div>
+                <div class="text-center mt-2" style="font-size:10px;color:var(--chu-phu)">Biểu đồ minh họa, không phải dữ liệu bán hàng thực tế</div>
+            </div>
+        </div>
+        <div class="col-lg-5" id="hoatdong">
+            <div class="panel">
+                <h3>Hoạt động gần đây</h3>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-plus-lg"></i></div><div><b>Thêm sản phẩm mới</b><br><small>Máy tính bảng • 10 phút trước</small></div></div>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-pencil"></i></div><div><b>Cập nhật thông tin sản phẩm</b><br><small>Đồng hồ thời trang • 35 phút trước</small></div></div>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-box-arrow-down"></i></div><div><b>Điều chỉnh số lượng tồn</b><br><small>Tai nghe không dây • 1 giờ trước</small></div></div>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-file-earmark-bar-graph"></i></div><div><b>Tạo báo cáo tháng</b><br><small>Báo cáo tổng hợp • Hôm nay</small></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+        <div class="col-lg-6">
+            <div class="panel">
+                <h3>Tình trạng danh mục</h3>
+                <div class="category-row"><span>Thiết bị công nghệ</span><span>42 sản phẩm</span></div>
+                <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+                <div class="category-row"><span>Phụ kiện</span><span>36 sản phẩm</span></div>
+                <div class="progress"><div class="progress-bar" style="width:62%"></div></div>
+                <div class="category-row"><span>Thời trang</span><span>28 sản phẩm</span></div>
+                <div class="progress"><div class="progress-bar" style="width:48%"></div></div>
+                <div class="category-row"><span>Nội thất</span><span>22 sản phẩm</span></div>
+                <div class="progress"><div class="progress-bar" style="width:37%"></div></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel">
+                <h3>Cần chú ý</h3>
+                <div class="activity"><div class="activity-icon" style="color:#e9a16d"><i class="bi bi-exclamation-circle"></i></div><div><b>07 sản phẩm có tồn kho thấp</b><br><small>Nên kiểm tra và bổ sung hàng</small></div></div>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-tags"></i></div><div><b>03 sản phẩm chưa phân loại</b><br><small>Cần cập nhật danh mục</small></div></div>
+                <div class="activity"><div class="activity-icon"><i class="bi bi-clipboard-check"></i></div><div><b>Kiểm kê định kỳ</b><br><small>Kiểm tra số lượng thực tế</small></div></div>
+                <a href="sanpham.html" class="btn-outline w-100 text-center mt-3">Mở quản lý sản phẩm</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title" id="chude">
+        <div><h2>Không gian màu sắc</h2><p>Chọn chủ đề phù hợp với sở thích của bạn</p></div>
+        <span style="color:var(--diem);font-size:12px">12 chủ đề</span>
+    </div>
+    <div class="panel">
+        <div class="theme-grid" id="themeGrid"></div>
+        <div class="mt-3" style="font-size:11px;color:var(--chu-phu)">Chủ đề được lưu trên trình duyệt và tự động áp dụng cho các trang còn lại.</div>
+    </div>
+
+    <footer class="footer d-flex justify-content-between flex-wrap gap-2">
+        <span>NOIR • Hệ thống quản lý sản phẩm</span>
+        <span>Giao diện minh họa phục vụ học tập</span>
+    </footer>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+const themes = [
+ {name:"Đen vàng",bg:"#0b0d12",panel:"#11151d",card:"#171d27",sub:"#1d2632",text:"#f4f1e9",muted:"#929cab",accent:"#d6b477"},
+ {name:"Đen đỏ",bg:"#100b0d",panel:"#1b1115",card:"#28171d",sub:"#38212a",text:"#fff0f1",muted:"#b69aa1",accent:"#e45b70"},
+ {name:"Xanh đêm",bg:"#08121b",panel:"#0e1c29",card:"#14283a",sub:"#1c354a",text:"#e9f5ff",muted:"#91aabd",accent:"#58b9e8"},
+ {name:"Tím hoàng gia",bg:"#100b1c",panel:"#1b1230",card:"#281b40",sub:"#352653",text:"#f4edff",muted:"#b3a1ce",accent:"#b28af5"},
+ {name:"Xanh ngọc",bg:"#071713",panel:"#0d241e",card:"#14352b",sub:"#1c4839",text:"#e9fff6",muted:"#91b8a9",accent:"#4ed3a3"},
+ {name:"Nâu đồng",bg:"#17100b",panel:"#251a12",card:"#36251a",sub:"#493222",text:"#fff4e8",muted:"#bda58e",accent:"#d69a5c"},
+ {name:"Hồng đêm",bg:"#1b0d16",panel:"#291321",card:"#3b1d30",sub:"#51283f",text:"#fff0f7",muted:"#c3a0b3",accent:"#ed85b6"},
+ {name:"Xanh biển",bg:"#0b1420",panel:"#132235",card:"#1c3048",sub:"#28415e",text:"#eff7ff",muted:"#9db2c9",accent:"#70a9ff"},
+ {name:"Xám bạc",bg:"#202328",panel:"#292e35",card:"#353c45",sub:"#454d58",text:"#f4f5f6",muted:"#b5bbc3",accent:"#c2cbd5"},
+ {name:"Trắng kem",bg:"#f3f0e9",panel:"#e9e4d9",card:"#fffdf8",sub:"#e6dfd0",text:"#25231f",muted:"#777267",accent:"#9b7138"},
+ {name:"Trắng xanh",bg:"#eef4f7",panel:"#e0ebf0",card:"#ffffff",sub:"#dce8ed",text:"#1d2c35",muted:"#647984",accent:"#2584a8"},
+ {name:"Hồng sáng",bg:"#fff0f4",panel:"#f9e1e9",card:"#ffffff",sub:"#f3d2df",text:"#39202b",muted:"#947080",accent:"#d65c91"}
+];
+function applyTheme(index){
+ const t=themes[index]; if(!t)return;
+ const root=document.documentElement;
+ root.style.setProperty('--nen',t.bg);
+ root.style.setProperty('--nen-phu',t.panel);
+ root.style.setProperty('--the',t.card);
+ root.style.setProperty('--the-phu',t.sub);
+ root.style.setProperty('--chu',t.text);
+ root.style.setProperty('--chu-phu',t.muted);
+ root.style.setProperty('--diem',t.accent);
+ root.style.setProperty('--diem-phu',t.accent);
+ root.style.setProperty('--bong',t.accent+'28');
+ localStorage.setItem('noirTheme',index);
+ $('.theme-option').removeClass('selected');
+ $('.theme-option').eq(index).addClass('selected');
+}
+themes.forEach((t,i)=>{
+ $('#themeGrid').append(`<button class="theme-option" title="${t.name}" aria-label="${t.name}" style="background:linear-gradient(135deg,${t.bg} 50%,${t.accent} 50%)" onclick="applyTheme(${i})"><span>${t.name}</span></button>`);
+});
+applyTheme(Number(localStorage.getItem('noirTheme')||0));
+</script>
+</body>
+</html>
+
+</html>

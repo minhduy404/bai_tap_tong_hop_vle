@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài tập JavaScript</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #222;
+            padding: 30px 15px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .description {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #00000010;
+        }
+
+        .box h2 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-size: 21px;
+        }
+
+        .box p {
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 12px 0 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 18px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 15px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 5px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .highlight {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Tính Lãi Suất Ngân Hàng và Đổi ngày tháng</h1>
+    <p class="description">Các công cụ tính toán và chuyển đổi ngày tháng</p>
+
+    <div class="container">
+
+        <!-- 1. TÍNH LÃI SUẤT -->
+        <div class="box">
+
+            <h2>1. Tính lãi suất ngân hàng</h2>
+            <p>Tính tiền lãi và tổng số tiền sau khi gửi tiết kiệm.</p>
+
+            <label>Số tiền gửi (VNĐ)</label>
+            <input type="number" id="tienGui" placeholder="Nhập số tiền">
+
+            <label>Lãi suất (%/năm)</label>
+            <input type="number" id="laiSuat" placeholder="Nhập lãi suất" step="any">
+
+            <label>Kỳ hạn (tháng)</label>
+            <input type="number" id="soThang" placeholder="Nhập số tháng">
+
+            <button onclick="tinhLai()">Tính lãi</button>
+
+            <div class="result" id="ketQuaLai">
+                Kết quả sẽ hiển thị ở đây.
+            </div>
+
+        </div>
+
+        <!-- 2. KIỂM TRA NĂM NHUẬN -->
+        <div class="box">
+
+            <h2>2. Kiểm tra năm nhuận</h2>
+            <p>Kiểm tra một năm có phải năm nhuận hay không.</p>
+
+            <label>Nhập năm dương lịch</label>
+            <input type="number" id="nam" placeholder="Ví dụ: 2024">
+
+            <button onclick="kiemTraNam()">Kiểm tra</button>
+
+            <div class="result" id="ketQuaNam">
+                Kết quả sẽ hiển thị ở đây.
+            </div>
+
+        </div>
+
+        <!-- 3. ĐỔI DƯƠNG LỊCH SANG ÂM LỊCH -->
+        <div class="box">
+
+            <h2>3. Đổi dương lịch sang âm lịch</h2>
+            <p>Tra cứu ngày tháng âm lịch Việt Nam.</p>
+
+            <label>Chọn ngày dương lịch</label>
+            <input type="date" id="ngayDuong">
+
+            <button onclick="doiAmLich()">Chuyển đổi</button>
+
+            <div class="result" id="ketQuaAm">
+                Kết quả sẽ hiển thị ở đây.
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        // 1. TÍNH LÃI SUẤT NGÂN HÀNG
+
+        function tinhLai() {
+
+            let tienGui = Number(document.getElementById("tienGui").value);
+            let laiSuat = Number(document.getElementById("laiSuat").value);
+            let soThang = Number(document.getElementById("soThang").value);
+
+            let ketQua = document.getElementById("ketQuaLai");
+
+            if (
+                document.getElementById("tienGui").value === "" ||
+                document.getElementById("laiSuat").value === "" ||
+                document.getElementById("soThang").value === "" ||
+                !Number.isFinite(tienGui) ||
+                !Number.isFinite(laiSuat) ||
+                !Number.isFinite(soThang) ||
+                tienGui <= 0 || laiSuat < 0 ||
+                soThang <= 0 || !Number.isInteger(soThang)
+            ) {
+                ketQua.innerHTML = "Vui lòng nhập dữ liệu hợp lệ!";
+                return;
+            }
+
+            let tienLai = tienGui * laiSuat / 100 * soThang / 12;
+
+            let tongTien = tienGui + tienLai;
+
+            ketQua.innerHTML =
+                "Tiền lãi: <b class='highlight'>" +
+                Math.round(tienLai).toLocaleString("vi-VN") + " VNĐ</b><br>" +
+
+                "Tổng tiền: <b class='highlight'>" +
+                Math.round(tongTien).toLocaleString("vi-VN") + " VNĐ</b>";
+        }
+
+
+        // 2. KIỂM TRA NĂM NHUẬN
+
+        function kiemTraNam() {
+
+            let nam = Number(document.getElementById("nam").value);
+
+            let ketQua = document.getElementById("ketQuaNam");
+
+            if (
+                document.getElementById("nam").value === "" ||
+                !Number.isSafeInteger(nam) || nam < 1
+            ) {
+                ketQua.innerHTML = "Vui lòng nhập năm hợp lệ!";
+                return;
+            }
+
+            if (nam % 400 === 0 || (nam % 4 === 0 && nam % 100 !== 0)) {
+
+                ketQua.innerHTML =
+                    "<b class='highlight'>" + nam +
+                    " là năm nhuận.</b><br>Năm có 366 ngày.";
+
+            } else {
+
+                ketQua.innerHTML =
+                    "<b class='highlight'>" + nam +
+                    " không phải năm nhuận.</b><br>Năm có 365 ngày.";
+
+            }
+        }
+
+
+        // 3. ĐỔI DƯƠNG LỊCH SANG ÂM LỊCH
+
+        const PI = Math.PI;
+
+        function jdFromDate(dd, mm, yy) {
+
+            let a = Math.floor((14 - mm) / 12);
+            let y = yy + 4800 - a;
+            let m = mm + 12 * a - 3;
+
+            let jd = dd + Math.floor((153 * m + 2) / 5)
+                + 365 * y + Math.floor(y / 4)
+                - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+
+            if (jd < 2299161) {
+                jd = dd + Math.floor((153 * m + 2) / 5)
+                    + 365 * y + Math.floor(y / 4) - 32083;
+            }
+
+            return jd;
+        }
+
+        function getNewMoonDay(k, timeZone) {
+
+            let T = k / 1236.85;
+            let T2 = T * T;
+            let T3 = T2 * T;
+            let dr = PI / 180;
+
+            let Jd1 = 2415020.75933 + 29.53058868 * k
+                + 0.0001178 * T2 - 0.000000155 * T3;
+
+            Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+
+            let M = 359.2242 + 29.10535608 * k
+                - 0.0000333 * T2 - 0.00000347 * T3;
+
+            let Mpr = 306.0253 + 385.81691806 * k
+                + 0.0107306 * T2 + 0.00001236 * T3;
+
+            let F = 21.2964 + 390.67050646 * k
+                - 0.0016528 * T2 - 0.00000239 * T3;
+
+            let C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr)
+                + 0.0021 * Math.sin(2 * dr * M);
+
+            C1 -= 0.4068 * Math.sin(Mpr * dr);
+            C1 += 0.0161 * Math.sin(2 * dr * Mpr);
+            C1 -= 0.0004 * Math.sin(3 * dr * Mpr);
+            C1 += 0.0104 * Math.sin(2 * dr * F);
+            C1 -= 0.0051 * Math.sin((M + Mpr) * dr);
+            C1 -= 0.0074 * Math.sin((M - Mpr) * dr);
+            C1 += 0.0004 * Math.sin((2 * F + M) * dr);
+            C1 -= 0.0004 * Math.sin((2 * F - M) * dr);
+            C1 -= 0.0006 * Math.sin((2 * F + Mpr) * dr);
+            C1 += 0.0010 * Math.sin((2 * F - Mpr) * dr);
+            C1 += 0.0005 * Math.sin((2 * Mpr + M) * dr);
+
+            let deltat;
+
+            if (T < -11) {
+                deltat = 0.001 + 0.000839 * T + 0.0002261 * T2
+                    - 0.00000845 * T3 - 0.000000081 * T * T3;
+            } else {
+                deltat = -0.000278 + 0.000265 * T + 0.000262 * T2;
+            }
+
+            return Math.floor(Jd1 + C1 - deltat + 0.5 + timeZone / 24);
+        }
+
+        function getSunLongitude(jdn, timeZone) {
+
+            let T = (jdn - 2451545.5 - timeZone / 24) / 36525;
+            let T2 = T * T;
+            let dr = PI / 180;
+
+            let M = 357.52910 + 35999.05030 * T
+                - 0.0001559 * T2 - 0.00000048 * T * T2;
+
+            let L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+
+            let DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M);
+
+            DL += (0.019993 - 0.000101 * T) * Math.sin(2 * dr * M);
+            DL += 0.000290 * Math.sin(3 * dr * M);
+
+            let L = (L0 + DL) * dr;
+            L -= PI * 2 * Math.floor(L / (PI * 2));
+
+            return Math.floor(L / PI * 6);
+        }
+
+        function getLunarMonth11(yy, timeZone) {
+
+            let off = jdFromDate(31, 12, yy) - 2415021;
+            let k = Math.floor(off / 29.530588853);
+
+            let nm = getNewMoonDay(k, timeZone);
+            let sunLong = getSunLongitude(nm, timeZone);
+
+            if (sunLong >= 9) {
+                nm = getNewMoonDay(k - 1, timeZone);
+            }
+
+            return nm;
+        }
+
+        function getLeapMonthOffset(a11, timeZone) {
+
+            let k = Math.floor((a11 - 2415021.076998695) / 29.530588853);
+            let last = 0;
+            let i = 1;
+
+            let arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+
+            do {
+                last = arc;
+                i++;
+                arc = getSunLongitude(getNewMoonDay(k + i, timeZone), timeZone);
+            } while (arc !== last && i < 14);
+
+            return i - 1;
+        }
+
+        function convertSolarToLunar(dd, mm, yy, timeZone) {
+
+            let dayNumber = jdFromDate(dd, mm, yy);
+
+            let k = Math.floor((dayNumber - 2415021.076998695) / 29.530588853);
+
+            let monthStart = getNewMoonDay(k + 1, timeZone);
+
+            if (monthStart > dayNumber) {
+                monthStart = getNewMoonDay(k, timeZone);
+            }
+
+            let a11 = getLunarMonth11(yy, timeZone);
+            let b11 = a11;
+            let lunarYear;
+
+            if (a11 >= monthStart) {
+                lunarYear = yy;
+                a11 = getLunarMonth11(yy - 1, timeZone);
+            } else {
+                lunarYear = yy + 1;
+                b11 = getLunarMonth11(yy + 1, timeZone);
+            }
+
+            let lunarDay = dayNumber - monthStart + 1;
+            let diff = Math.floor((monthStart - a11) / 29);
+
+            let lunarLeap = 0;
+            let lunarMonth = diff + 11;
+
+            if (b11 - a11 > 365) {
+
+                let leapMonthDiff = getLeapMonthOffset(a11, timeZone);
+
+                if (diff >= leapMonthDiff) {
+                    lunarMonth = diff + 10;
+
+                    if (diff === leapMonthDiff) {
+                        lunarLeap = 1;
+                    }
+                }
+            }
+
+            if (lunarMonth > 12) {
+                lunarMonth -= 12;
+            }
+
+            if (lunarMonth >= 11 && diff < 4) {
+                lunarYear--;
+            }
+
+            return [lunarDay, lunarMonth, lunarYear, lunarLeap];
+        }
+
+        function doiAmLich() {
+
+            let ngay = document.getElementById("ngayDuong").value;
+            let ketQua = document.getElementById("ketQuaAm");
+
+            if (ngay === "") {
+                ketQua.innerHTML = "Vui lòng chọn ngày!";
+                return;
+            }
+
+            let [nam, thang, ngayDuong] = ngay.split("-").map(Number);
+
+            let am = convertSolarToLunar(ngayDuong, thang, nam, 7);
+
+            let can = [
+                "Giáp", "Ất", "Bính", "Đinh", "Mậu",
+                "Kỷ", "Canh", "Tân", "Nhâm", "Quý"
+            ];
+
+            let chi = [
+                "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ",
+                "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"
+            ];
+
+            let namCanChi = can[(am[2] + 6) % 10] + " " +
+                chi[(am[2] + 8) % 12];
+
+            ketQua.innerHTML =
+                "Ngày âm lịch: <b class='highlight'>" +
+                am[0] + "/" + am[1] +
+                (am[3] ? " (tháng nhuận)" : "") +
+                "/" + am[2] + "</b><br>" +
+
+                "Năm âm lịch: <b class='highlight'>" +
+                namCanChi + "</b>";
+        }
+
+    </script>
+
+</body>
+</html>

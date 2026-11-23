@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 2 - Tra cứu tiện ích</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff5f7;
+            color: #4a3540;
+            padding: 30px 15px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #d65a85;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #987080;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border: 1px solid #f4cbd8;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px #d98aa51c;
+            transition: 0.3s;
+        }
+
+        .card h2 {
+            color: #d65a85;
+            margin-bottom: 12px;
+            font-size: 21px;
+        }
+
+        .card p {
+            color: #987080;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 12px 0 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #edc0d0;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fffafd;
+            color: #4a3540;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #d65a85;
+            box-shadow: 0 0 5px #f3b5ca;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #e88bab;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: #d65a85;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 15px;
+            background: #fff0f5;
+            border-left: 4px solid #e88bab;
+            border-radius: 7px;
+            min-height: 50px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .demo-box {
+            background: #ffe3ed;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .demo-box h3 {
+            color: #c34d77;
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #d6336c;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            color: #987080;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>GÓC TIỆN ÍCH</h1>
+        <p>Tra cứu giá hoa quả và các công cụ JavaScript</p>
+    </header>
+
+    <main class="container">
+
+        <!-- 1. TRUY XUẤT DOM -->
+        <section class="card">
+
+            <h2>1. Truy xuất DOM</h2>
+
+            <p>Thay đổi nội dung trang web bằng JavaScript.</p>
+
+            <label>Nhập tên của bạn</label>
+            <input type="text" id="hoTen" placeholder="Nhập họ và tên">
+
+            <button onclick="hienThiTen()">Hiển thị thông tin</button>
+
+            <div class="result" id="ketQuaDOM">
+                Nội dung sẽ thay đổi khi bạn nhấn nút.
+            </div>
+
+            <label>Thay đổi màu nền</label>
+
+            <select id="chonMau" onchange="doiMauNen()">
+                <option value="#fff0f5">Hồng nhạt</option>
+                <option value="#fce4ec">Hồng pastel</option>
+                <option value="#ffe4e1">Hồng phấn</option>
+                <option value="#ffffff">Trắng</option>
+            </select>
+
+        </section>
+
+
+        <!-- 2. SỰ KIỆN CHUỘT -->
+        <section class="card">
+
+            <h2>2. Hiệu chỉnh theo sự kiện chuột</h2>
+
+            <p>Di chuyển chuột, nhấn hoặc nhấn đúp vào khung bên dưới.</p>
+
+            <div class="demo-box"
+                id="khungChuột"
+                onmouseover="chuotDiVao()"
+                onmouseout="chuotDiRa()"
+                onclick="nhanChuot()"
+                ondblclick="nhanDoi()">
+
+                <h3 id="tieuDeChuot">TƯƠNG TÁC CHUỘT</h3>
+
+                <p id="noiDungChuot">
+                    Hãy thử di chuyển chuột vào đây!
+                </p>
+
+            </div>
+
+            <div class="result" id="ketQuaChuot">
+                Đang chờ sự kiện chuột...
+            </div>
+
+        </section>
+
+
+        <!-- 3. TRA CỨU GIÁ HOA QUẢ -->
+        <section class="card">
+
+            <h2>3. Tra cứu giá hoa quả</h2>
+
+            <p>Chọn loại hoa quả để xem giá tham khảo.</p>
+
+            <label>Chọn hoa quả</label>
+
+            <select id="hoaQua">
+                <option value="">-- Chọn hoa quả --</option>
+                <option value="xoai">Xoài</option>
+                <option value="tao">Táo</option>
+                <option value="cam">Cam</option>
+                <option value="chuoi">Chuối</option>
+                <option value="duaHau">Dưa hấu</option>
+                <option value="nho">Nho</option>
+                <option value="oi">Ổi</option>
+                <option value="sauRieng">Sầu riêng</option>
+            </select>
+
+            <button onclick="traCuuGia()">Tra cứu giá</button>
+
+            <div class="result" id="ketQuaGia">
+                Giá hoa quả sẽ hiển thị ở đây.
+            </div>
+
+        </section>
+
+
+        <!-- 4. TÍNH SỐ NGÀY TRONG THÁNG -->
+        <section class="card">
+
+            <h2>4. Tính số ngày trong tháng</h2>
+
+            <p>Nhập tháng và năm để xác định số ngày.</p>
+
+            <label>Chọn tháng</label>
+
+            <select id="thang">
+                <option value="">-- Chọn tháng --</option>
+                <option value="1">Tháng 1</option>
+                <option value="2">Tháng 2</option>
+                <option value="3">Tháng 3</option>
+                <option value="4">Tháng 4</option>
+                <option value="5">Tháng 5</option>
+                <option value="6">Tháng 6</option>
+                <option value="7">Tháng 7</option>
+                <option value="8">Tháng 8</option>
+                <option value="9">Tháng 9</option>
+                <option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+            </select>
+
+            <label>Nhập năm</label>
+            <input type="number" id="nam" placeholder="Ví dụ: 2024">
+
+            <button onclick="tinhSoNgay()">Tính số ngày</button>
+
+            <div class="result" id="ketQuaNgay">
+                Kết quả sẽ hiển thị ở đây.
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>BÀI TẬP THỰC HÀNH HTML - CSS - JAVASCRIPT</p>
+    </footer>
+
+
+    <script>
+
+        // 1. TRUY XUẤT DOM
+
+        function hienThiTen() {
+
+            let ten = document.getElementById("hoTen").value;
+
+            let ketQua = document.getElementById("ketQuaDOM");
+
+            if (ten.trim() === "") {
+                ketQua.innerHTML = "Vui lòng nhập họ và tên!";
+            } else {
+                ketQua.innerHTML =
+                    "Xin chào <b class='highlight'>" + ten +
+                    "</b>! Chào mừng bạn đến với trang web.";
+            }
+        }
+
+        function doiMauNen() {
+
+            let mau = document.getElementById("chonMau").value;
+
+            document.body.style.backgroundColor = mau;
+        }
+
+
+        // 2. SỰ KIỆN CHUỘT
+
+        function chuotDiVao() {
+
+            document.getElementById("khungChuột").style.backgroundColor = "#f8b8ce";
+
+            document.getElementById("noiDungChuot").innerHTML =
+                "Chuột đang di chuyển vào khung!";
+        }
+
+        function chuotDiRa() {
+
+            document.getElementById("khungChuột").style.backgroundColor = "#ffe3ed";
+
+            document.getElementById("noiDungChuot").innerHTML =
+                "Chuột đã rời khỏi khung!";
+        }
+
+        function nhanChuot() {
+
+            document.getElementById("ketQuaChuot").innerHTML =
+                "Bạn vừa nhấn chuột một lần!";
+        }
+
+        function nhanDoi() {
+
+            document.getElementById("ketQuaChuot").innerHTML =
+                "Bạn vừa nhấn đúp chuột!";
+        }
+
+
+        // 3. TRA CỨU GIÁ HOA QUẢ
+
+        function traCuuGia() {
+
+            let hoaQua = document.getElementById("hoaQua").value;
+
+            let ketQua = document.getElementById("ketQuaGia");
+
+            let gia = {
+                xoai: ["Xoài", 35000],
+                tao: ["Táo", 50000],
+                cam: ["Cam", 30000],
+                chuoi: ["Chuối", 20000],
+                duaHau: ["Dưa hấu", 15000],
+                nho: ["Nho", 80000],
+                oi: ["Ổi", 25000],
+                sauRieng: ["Sầu riêng", 120000]
+            };
+
+            if (hoaQua === "") {
+
+                ketQua.innerHTML = "Vui lòng chọn loại hoa quả!";
+
+            } else {
+
+                ketQua.innerHTML =
+                    "Tên hoa quả: <b class='highlight'>" +
+                    gia[hoaQua][0] + "</b><br>" +
+
+                    "Giá tham khảo: <b class='highlight'>" +
+                    gia[hoaQua][1].toLocaleString("vi-VN") +
+                    " VNĐ/kg</b>";
+            }
+        }
+
+
+        // 4. TÍNH SỐ NGÀY TRONG THÁNG
+
+        function tinhSoNgay() {
+
+            let thang = Number(document.getElementById("thang").value);
+
+            let nam = Number(document.getElementById("nam").value);
+
+            let ketQua = document.getElementById("ketQuaNgay");
+
+            if (
+                document.getElementById("thang").value === "" ||
+                document.getElementById("nam").value === "" ||
+                !Number.isSafeInteger(nam) ||
+                nam < 1
+            ) {
+                ketQua.innerHTML = "Vui lòng chọn tháng và nhập năm hợp lệ!";
+                return;
+            }
+
+            let soNgay;
+
+            if (thang === 2) {
+
+                if (nam % 400 === 0 || (nam % 4 === 0 && nam % 100 !== 0)) {
+                    soNgay = 29;
+                } else {
+                    soNgay = 28;
+                }
+
+            } else if (
+                thang === 4 || thang === 6 ||
+                thang === 9 || thang === 11
+            ) {
+
+                soNgay = 30;
+
+            } else {
+
+                soNgay = 31;
+
+            }
+
+            ketQua.innerHTML =
+                "Tháng " + thang + " năm " + nam +
+                " có <b class='highlight'>" +
+                soNgay + " ngày.</b>";
+        }
+
+    </script>
+
+</body>
+</html>

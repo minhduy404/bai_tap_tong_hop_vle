@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIR - Báo cáo kinh doanh</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--nen:#0b0d12;--nen-phu:#11151d;--the:#171d27;--the-phu:#1d2632;--chu:#f4f1e9;--chu-phu:#929cab;--vien:rgba(255,255,255,.09);--diem:#d6b477;--bong:rgba(214,180,119,.16)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--nen);color:var(--chu);font-family:'DM Sans',sans-serif;transition:.3s}
+a{text-decoration:none;color:inherit}
+.sidebar{width:245px;position:fixed;inset:0 auto 0 0;background:var(--nen-phu);border-right:1px solid var(--vien);padding:27px 17px;z-index:5}
+.logo{font:700 29px 'Playfair Display';letter-spacing:5px;color:var(--diem);padding:0 12px 30px}
+.logo small{display:block;font:10px 'DM Sans';letter-spacing:3px;color:var(--chu-phu)}
+.menu-label{font-size:10px;color:var(--chu-phu);letter-spacing:2px;padding:15px 12px 8px}
+.menu a{display:flex;gap:13px;align-items:center;padding:12px 14px;border-radius:11px;color:var(--chu-phu);margin:4px 0;transition:.2s}
+.menu a:hover,.menu a.active{background:var(--bong);color:var(--diem);transform:translateX(3px)}
+.menu i{font-size:18px}
+.main{margin-left:245px;padding:30px 34px 60px;max-width:1650px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:15px}
+.muted{color:var(--chu-phu)}
+h1,h2,h3{font-family:'Playfair Display',serif}
+.page-title{font-size:34px;margin:12px 0 5px}
+.panel{background:var(--the);border:1px solid var(--vien);border-radius:18px;padding:21px;height:100%}
+.btn-gold{background:var(--diem);color:#171717;border:0;border-radius:10px;padding:11px 17px;font-weight:800}
+.btn-gold:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-soft{background:var(--bong);color:var(--diem);border:1px solid transparent;border-radius:9px;padding:9px 13px}
+.btn-soft:hover{border-color:var(--diem)}
+.form-select{background:var(--nen-phu);border:1px solid var(--vien);color:var(--chu);border-radius:10px;padding:10px}
+.form-select:focus{background:var(--nen-phu);color:var(--chu);border-color:var(--diem);box-shadow:0 0 0 3px var(--bong)}
+.form-select option{background:var(--nen-phu);color:var(--chu)}
+.metric{font-size:27px;font-weight:800;margin:10px 0 4px}
+.metric-label{font-size:12px;color:var(--chu-phu)}
+.metric-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:var(--bong);color:var(--diem);font-size:20px}
+.metric-change{font-size:11px;color:#5bc99a}
+.chart{height:230px;display:flex;align-items:end;gap:12px;padding:20px 8px 0;border-bottom:1px solid var(--vien)}
+.chart-column{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:9px}
+.chart-bar{width:min(42px,75%);min-height:5px;border-radius:8px 8px 2px 2px;background:linear-gradient(180deg,var(--diem),var(--diem)66%,var(--bong));transition:.35s;position:relative}
+.chart-bar:hover{filter:brightness(1.3);transform:scaleX(1.12)}
+.chart-column small{font-size:10px;color:var(--chu-phu)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--chu-phu)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--diem);margin-right:6px}
+.progress{height:8px;background:var(--the-phu)}
+.progress-bar{background:var(--diem)}
+.table{--bs-table-bg:transparent;--bs-table-color:var(--chu);--bs-table-border-color:var(--vien)}
+.tag{display:inline-block;background:var(--bong);color:var(--diem);padding:5px 9px;border-radius:7px;font-size:10px;font-weight:700}
+@media(max-width:1000px){.sidebar{width:72px;padding:20px 9px}.logo{font-size:17px;padding:0 8px 25px}.logo small,.menu-label,.menu span{display:none}.menu a{justify-content:center}.main{margin-left:72px;padding:22px}}
+@media(max-width:650px){.sidebar{height:62px;width:100%;bottom:auto;padding:8px 12px}.logo{display:none}.menu{display:flex;justify-content:space-around}.menu a{padding:9px;margin:0}.menu span{display:none}.main{margin:0;padding:85px 14px 35px}.page-title{font-size:27px}.chart{gap:5px}}
+@media print{.sidebar,.topbar .btn-soft,.filter-panel,.no-print{display:none!important}.main{margin:0;padding:0;max-width:none}.panel{break-inside:avoid;border:1px solid #ccc;background:white;color:#111}.muted,.metric-label,.chart-column small{color:#555!important}body{background:white;color:#111}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+ <div class="logo">NOIR<small>HỆ THỐNG QUẢN LÝ</small></div>
+ <div class="menu-label">TỔNG QUAN</div>
+ <nav class="menu">
+  <a href="index.html"><i class="bi bi-grid-1x2"></i><span>Tổng quan</span></a>
+  <a href="sanpham.html"><i class="bi bi-box-seam"></i><span>Sản phẩm</span></a>
+  <a class="active" href="baocao.html"><i class="bi bi-bar-chart-line"></i><span>Báo cáo</span></a>
+ </nav>
+</aside>
+
+<main class="main">
+ <header class="topbar">
+  <div class="muted small">Không gian làm việc / Báo cáo</div>
+  <div class="d-flex gap-2">
+   <a href="index.html" class="btn-soft"><i class="bi bi-house me-1"></i>Trang tổng quan</a>
+   <button class="btn-soft no-print" onclick="window.print()"><i class="bi bi-printer me-1"></i>In báo cáo</button>
+  </div>
+ </header>
+
+ <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+  <div><span class="tag">PHÂN TÍCH & THỐNG KÊ</span><h1 class="page-title">Báo cáo kinh doanh</h1><div class="muted small">Theo dõi kết quả và tình trạng vận hành cửa hàng</div></div>
+  <button class="btn-gold no-print" onclick="exportCSV()"><i class="bi bi-download me-2"></i>Xuất báo cáo</button>
+ </div>
+
+ <div class="panel filter-panel mb-4">
+  <div class="row align-items-center g-3">
+   <div class="col-md-4"><label class="form-label small muted">Khoảng thời gian</label>
+    <select class="form-select" id="period" onchange="changePeriod()">
+     <option value="month">Tháng hiện tại</option><option value="quarter">Quý hiện tại</option><option value="year">Năm hiện tại</option>
+    </select>
+   </div>
+   <div class="col-md-4"><label class="form-label small muted">Phạm vi báo cáo</label>
+    <select class="form-select" id="scope" onchange="changePeriod()">
+     <option value="all">Toàn bộ cửa hàng</option><option value="tech">Thiết bị công nghệ</option><option value="accessory">Phụ kiện</option><option value="fashion">Thời trang</option>
+    </select>
+   </div>
+   <div class="col-md-4"><label class="form-label small muted">Trạng thái dữ liệu</label>
+    <div class="tag d-block text-center py-2">Số liệu mô phỏng phục vụ học tập</div>
+   </div>
+  </div>
+ </div>
+
+ <div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3"><div class="panel">
+   <div class="metric-icon"><i class="bi bi-cash-stack"></i></div><div class="metric-label mt-3">Doanh thu</div><div class="metric" id="revenue">486,5 triệu</div><div class="metric-change"><i class="bi bi-arrow-up-right"></i> 12,8% so với kỳ trước</div>
+  </div></div>
+  <div class="col-6 col-xl-3"><div class="panel">
+   <div class="metric-icon"><i class="bi bi-receipt"></i></div><div class="metric-label mt-3">Đơn hàng</div><div class="metric" id="orders">286</div><div class="metric-change">Số đơn hàng đã ghi nhận</div>
+  </div></div>
+  <div class="col-6 col-xl-3"><div class="panel">
+   <div class="metric-icon"><i class="bi bi-bag-check"></i></div><div class="metric-label mt-3">Giá trị trung bình</div><div class="metric" id="average">1,7 triệu</div><div class="metric-change">Doanh thu trên mỗi đơn</div>
+  </div></div>
+  <div class="col-6 col-xl-3"><div class="panel">
+   <div class="metric-icon"><i class="bi bi-box-seam"></i></div><div class="metric-label mt-3">Giá trị tồn kho</div><div class="metric" id="inventory">8,45 tỷ</div><div class="metric-change">Theo giá trị nhập hàng</div>
+  </div></div>
+ </div>
+
+ <div class="row g-3 mb-4">
+  <div class="col-lg-8">
+   <div class="panel">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+     <div><h2 class="fs-5 mb-1">Biến động doanh thu</h2><div class="muted small">So sánh doanh thu theo từng giai đoạn</div></div>
+     <span class="tag">Doanh thu minh họa</span>
+    </div>
+    <div class="chart" id="revenueChart"></div>
+    <div class="legend mt-3"><span><i></i>Doanh thu</span><span class="muted">Đơn vị: triệu đồng</span></div>
+   </div>
+  </div>
+  <div class="col-lg-4">
+   <div class="panel">
+    <h2 class="fs-5 mb-1">Cơ cấu danh mục</h2><div class="muted small mb-4">Tỷ trọng sản phẩm theo nhóm</div>
+    <div class="mb-4"><div class="d-flex justify-content-between small mb-2"><span>Thiết bị công nghệ</span><b>42%</b></div><div class="progress"><div class="progress-bar" style="width:42%"></div></div></div>
+    <div class="mb-4"><div class="d-flex justify-content-between small mb-2"><span>Phụ kiện</span><b>28%</b></div><div class="progress"><div class="progress-bar" style="width:28%"></div></div></div>
+    <div class="mb-4"><div class="d-flex justify-content-between small mb-2"><span>Thời trang</span><b>18%</b></div><div class="progress"><div class="progress-bar" style="width:18%"></div></div></div>
+    <div><div class="d-flex justify-content-between small mb-2"><span>Nội thất và khác</span><b>12%</b></div><div class="progress"><div class="progress-bar" style="width:12%"></div></div></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="row g-3 mb-4">
+  <div class="col-lg-6">
+   <div class="panel">
+    <h2 class="fs-5 mb-3">Tình hình kho hàng</h2>
+    <div class="d-flex justify-content-between mb-2"><span class="muted small">Hàng còn đủ</span><b>86%</b></div>
+    <div class="progress mb-4"><div class="progress-bar" style="width:86%"></div></div>
+    <div class="d-flex justify-content-between mb-2"><span class="muted small">Hàng sắp hết</span><b style="color:#e9a16d">9%</b></div>
+    <div class="progress mb-4"><div class="progress-bar" style="width:9%;background:#e9a16d"></div></div>
+    <div class="d-flex justify-content-between mb-2"><span class="muted small">Hết hàng</span><b style="color:#e46b72">5%</b></div>
+    <div class="progress"><div class="progress-bar" style="width:5%;background:#e46b72"></div></div>
+    <a href="sanpham.html" class="btn-soft d-block text-center mt-4">Kiểm tra danh sách sản phẩm <i class="bi bi-arrow-right ms-1"></i></a>
+   </div>
+  </div>
+  <div class="col-lg-6">
+   <div class="panel">
+    <h2 class="fs-5 mb-3">Nhận định tổng hợp</h2>
+    <div class="d-flex gap-3 mb-3"><i class="bi bi-graph-up-arrow fs-3" style="color:#5bc99a"></i><div><b>Doanh thu có xu hướng tăng</b><div class="muted small">Kết quả mô phỏng cho thấy doanh thu tăng so với kỳ trước.</div></div></div>
+    <div class="d-flex gap-3 mb-3"><i class="bi bi-exclamation-triangle fs-3" style="color:#e9a16d"></i><div><b>Cần kiểm soát hàng tồn</b><div class="muted small">Một số mặt hàng có số lượng thấp cần được bổ sung.</div></div></div>
+    <div class="d-flex gap-3"><i class="bi bi-bullseye fs-3" style="color:var(--diem)"></i><div><b>Ưu tiên nhóm bán chủ lực</b><div class="muted small">Theo dõi hiệu quả nhóm thiết bị công nghệ và phụ kiện.</div></div></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+   <div><h2 class="fs-5 mb-1">Bảng tổng hợp danh mục</h2><div class="muted small">Số liệu ví dụ để thực hành chức năng báo cáo</div></div>
+   <span class="tag">Bảng thống kê</span>
+  </div>
+  <div class="table-responsive">
+   <table class="table align-middle">
+    <thead><tr><th>Danh mục</th><th>Số sản phẩm</th><th>Tỷ trọng</th><th>Tình trạng</th></tr></thead>
+    <tbody>
+     <tr><td>Thiết bị công nghệ</td><td>42</td><td>42%</td><td><span class="tag">Ổn định</span></td></tr>
+     <tr><td>Phụ kiện</td><td>36</td><td>28%</td><td><span class="tag">Ổn định</span></td></tr>
+     <tr><td>Thời trang</td><td>28</td><td>18%</td><td><span class="tag">Cần theo dõi</span></td></tr>
+     <tr><td>Nội thất</td><td>22</td><td>12%</td><td><span class="tag">Ổn định</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ <footer class="text-center muted small mt-5">NOIR • Báo cáo và phân tích • Dữ liệu minh họa phục vụ học tập</footer>
+</main>
+
+<script>
+const data={
+ month:{revenue:"486,5 triệu",orders:"286",average:"1,7 triệu",inventory:"8,45 tỷ",bars:[45,62,54,78,68,92],labels:["Tuần 1","Tuần 2","Tuần 3","Tuần 4","Tuần 5","Hiện tại"]},
+ quarter:{revenue:"1,42 tỷ",orders:"824",average:"1,72 triệu",inventory:"8,45 tỷ",bars:[48,58,65,72,85,96],labels:["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6"]},
+ year:{revenue:"5,86 tỷ",orders:"3.420",average:"1,71 triệu",inventory:"8,45 tỷ",bars:[42,50,58,63,77,94],labels:["Tháng 1","Tháng 3","Tháng 5","Tháng 7","Tháng 9","Tháng 11"]}
+};
+function drawChart(d){
+ let max=Math.max(...d.bars);
+ document.getElementById("revenueChart").innerHTML=d.bars.map((v,i)=>`
+ <div class="chart-column"><div class="chart-bar" title="${v} đơn vị" style="height:${v/max*100}%"></div><small>${d.labels[i]}</small></div>`).join("");
+}
+function changePeriod(){
+ let d=data[document.getElementById("period").value];
+ let scope=document.getElementById("scope").value;
+ let multiplier=scope==="all"?1:scope==="tech"?.55:scope==="accessory"?.25:.2;
+ document.getElementById("revenue").textContent=scope==="all"?d.revenue:(Number(d.revenue.replace(/[^\d]/g,""))*multiplier).toLocaleString("vi-VN")+" (ước tính)";
+ document.getElementById("orders").textContent=scope==="all"?d.orders:Math.round(Number(d.orders.replace(/\./g,""))*multiplier).toLocaleString("vi-VN");
+ document.getElementById("average").textContent=d.average;
+ document.getElementById("inventory").textContent=d.inventory;
+ drawChart(d);
+}
+function exportCSV(){
+ const rows=[
+ ["BÁO CÁO KINH DOANH NOIR"],
+ ["Khoảng thời gian",document.getElementById("period").selectedOptions[0].text],
+ ["Phạm vi",document.getElementById("scope").selectedOptions[0].text],
+ [],
+ ["Chỉ số","Giá trị"],
+ ["Doanh thu",document.getElementById("revenue").textContent],
+ ["Đơn hàng",document.getElementById("orders").textContent],
+ ["Giá trị trung bình",document.getElementById("average").textContent],
+ ["Giá trị tồn kho",document.getElementById("inventory").textContent],
+ [],
+ ["Danh mục","Số sản phẩm","Tỷ trọng"],
+ ["Thiết bị công nghệ","42","42%"],
+ ["Phụ kiện","36","28%"],
+ ["Thời trang","28","18%"],
+ ["Nội thất","22","12%"]
+ ];
+ const csv="\uFEFF"+rows.map(r=>r.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="bao-cao-noir.csv";a.click();URL.revokeObjectURL(url);
+}
+const themes=[
+["Đen vàng","#0b0d12","#11151d","#171d27","#1d2632","#f4f1e9","#929cab","#d6b477"],
+["Đen đỏ","#100b0d","#1b1115","#28171d","#38212a","#fff0f1","#b69aa1","#e45b70"],
+["Xanh đêm","#08121b","#0e1c29","#14283a","#1c354a","#e9f5ff","#91aabd","#58b9e8"],
+["Tím hoàng gia","#100b1c","#1b1230","#281b40","#352653","#f4edff","#b3a1ce","#b28af5"],
+["Xanh ngọc","#071713","#0d241e","#14352b","#1c4839","#e9fff6","#91b8a9","#4ed3a3"],
+["Nâu đồng","#17100b","#251a12","#36251a","#493222","#fff4e8","#bda58e","#d69a5c"],
+["Hồng đêm","#1b0d16","#291321","#3b1d30","#51283f","#fff0f7","#c3a0b3","#ed85b6"],
+["Xanh biển","#0b1420","#132235","#1c3048","#28415e","#eff7ff","#9db2c9","#70a9ff"],
+["Xám bạc","#202328","#292e35","#353c45","#454d58","#f4f5f6","#b5bbc3","#c2cbd5"],
+["Trắng kem","#f3f0e9","#e9e4d9","#fffdf8","#e6dfd0","#25231f","#777267","#9b7138"],
+["Trắng xanh","#eef4f7","#e0ebf0","#ffffff","#dce8ed","#1d2c35","#647984","#2584a8"],
+["Hồng sáng","#fff0f4","#f9e1e9","#ffffff","#f3d2df","#39202b","#947080","#d65c91"]
+];
+function applyTheme(i){
+ let t=themes[i],r=document.documentElement;
+ ["--nen","--nen-phu","--the","--the-phu","--chu","--chu-phu","--diem"].forEach((k,n)=>r.style.setProperty(k,t[n+1]));
+ r.style.setProperty("--bong",t[7]+"28");
+ localStorage.setItem("noirTheme",i);
+}
+applyTheme(Number(localStorage.getItem("noirTheme")||0));
+changePeriod();
+</script>
+</body>
+</html>
